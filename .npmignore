@@ -1,5 +1,7 @@
 .git
 .github
+dist/index.d.ts
+dist/index.js.map
 node_modules
 src
 test
