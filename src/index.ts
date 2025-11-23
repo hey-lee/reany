@@ -4,11 +4,12 @@ import { program } from 'commander'
 import { commandInit } from './commands/init'
 import { commandAdd } from './commands/add'
 import { commandBuild } from './commands/build'
+import { version } from '../package.json'
 
 program
   .name(`reany`)
   .description(`reuse any component in any project`)
-  .version(`0.0.0`, `-v, --version`, `show version`)
+  .version(version, `-v, --version`, `show version`)
 
 program
   .command(`init`)
