@@ -31,8 +31,12 @@ export const commandBuild = async () => {
           }
           const itemDir = path.join(
             path.dirname(publicRepoDir),
+            item.scope || ``,
             `${item.name}.json`
           )
+
+          fs.mkdirSync(path.dirname(itemDir), { recursive: true })
+
           fs.writeFileSync(itemDir, JSON.stringify(item, null, 2))
           return item
         })
