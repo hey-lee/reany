@@ -1,0 +1,43 @@
+import fs from 'fs'
+import path from 'path'
+
+export const commandBuild = async () => {
+  const projectDir = process.cwd()
+  const repoDir = path.join(projectDir, `repo.json`)
+  const publicRepoDir = path.join(projectDir, `public/r/repo.json`)
+
+  if (fs.existsSync(repoDir)) {
+    try {
+      fs.mkdirSync(path.dirname(publicRepoDir), { recursive: true })
+
+      const repoString = fs.readFileSync(repoDir, `utf-8`)
+      const repo = JSON.parse(repoString)
+
+      if (Array.isArray(repo.items)) {
+        repo.items = repo.items.map((item: any) => {
+          if (Array.isArray(item.files)) {
+            item.files = item.files.map((file: any) => {
+              if (fs.existsSync(file.source)) {
+                file.content = fs.readFileSync(file.source, `utf-8`)
+              }
+              return file
+            })
+          }
+          const itemDir = path.join(
+            path.dirname(publicRepoDir),
+            `${item.name}.json`
+          )
+          fs.writeFileSync(itemDir, JSON.stringify(item, null, 2))
+          return item
+        })
+      }
+
+      if (Array.isArray(repo.items)) {
+      }
+
+      fs.writeFileSync(publicRepoDir, JSON.stringify(repo, null, 2))
+    } catch (error) {
+      console.log(`repo.json is not a valid json file`, error)
+    }
+  }
+}
