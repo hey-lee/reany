@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { isText } from '../fns/is-text'
 
 export const commandBuild = async () => {
   const projectDir = process.cwd()
@@ -18,7 +19,12 @@ export const commandBuild = async () => {
           if (Array.isArray(item.files)) {
             item.files = item.files.map((file: any) => {
               if (fs.existsSync(file.source)) {
-                file.content = fs.readFileSync(file.source, `utf-8`)
+                const buffer = fs.readFileSync(file.source)
+                if (isText(buffer)) {
+                  file.content = buffer.toString(`utf-8`)
+                }
+              } else {
+                console.log(`file source not exists`, file.source)
               }
               return file
             })
