@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
+import prompts from 'prompts'
 import {
   isUrl,
   isValidTplUrl,
@@ -55,11 +56,26 @@ export const commandAdd = async (components: string[]) => {
   }
 }
 
-const addFiles = (files: Reany.File[]) => {
+const addFiles = async (files: Reany.File[]) => {
   for (const file of files) {
     const dirname = path.dirname(path.join(process.cwd(), file.target))
     fs.mkdirSync(dirname, { recursive: true })
-    file.content && fs.writeFileSync(file.target, file.content)
+
+    if (file.content) {
+      if (!fs.existsSync(file.target)) {
+        fs.writeFileSync(file.target, file.content)
+        return
+      }
+      const { overwrite } = await prompts({
+        type: `confirm`,
+        name: `overwrite`,
+        message: `${chalk.blue(file.target)} already exists, do you want to overwrite it?`,
+        initial: false,
+      })
+      if (overwrite) {
+        fs.writeFileSync(file.target, file.content)
+      }
+    }
   }
 }
 
