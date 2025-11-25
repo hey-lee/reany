@@ -2,10 +2,10 @@
 import type { Rule } from './rules'
 
 export const validate = async (text: string, rules: Rule[]) => {
-  for (const rele of rules) {
-    const isValid = await rele.validate(text)
+  for (const rule of rules) {
+    const isValid = await rule.validate(text)
     if (!isValid) {
-      const message = typeof rele.message === 'function' ? rele.message(text) : rele.message
+      const message = typeof rule.message === 'function' ? rule.message(text) : rule.message
       return [false, message]
     }
   }
