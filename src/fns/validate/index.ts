@@ -2,15 +2,27 @@
 import type { Rule } from './rules'
 
 /**
- * Validates a text against a set of rules.
- * Iterates over each rule, asynchronously validating the text.
- * If a rule fails, returns a tuple with `false` and the rule's error message.
- * If all rules pass, returns a tuple with `true`.
+ * Validate a text string against an array of rules.
  *
- * @param text - The text to validate.
- * @param rules - The rules to apply to the text.
- * @returns A tuple with `true` if validation passes, or `false` and an error message if validation fails.
+ * @param text   - The text to validate.
+ * @param rules  - An array of validation rules to apply.
+ * @returns      - A tuple: `[true]` if all rules pass,
+ *                 or `[false, message]` where `message` is the first failure message.
+ *
+ * @example
+ * ```ts
+ * const rules = [
+ *   {
+ *     validate: (t: string) => t.length >= 5,
+ *     message: 'Text must be at least 5 characters'
+ *   }
+ * ];
+ * const [ok, msg] = await validate('hi', rules);
+ * console.log(ok);  // false
+ * console.log(msg); // "Text must be at least 5 characters"
+ * ```
  */
+
 export const validate = async (text: string, rules: Rule[]) => {
   for (const rule of rules) {
     const isValid = await rule.validate(text)
