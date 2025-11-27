@@ -2,6 +2,21 @@ import fs from 'fs'
 import chalk from 'chalk'
 import { CONFIG_FILE_PATH } from '../config'
 
+/**
+ * Initializes a new reany configuration file.
+ *
+ * Checks if `reany.json` already exists at the configured path.
+ * If it does, logs a warning and exits; otherwise, writes a new
+ * config file with an empty `repos` object.
+ *
+ * @example
+ * // Run from CLI
+ * $ reany init
+ * // Creates reany.json with content:
+ * // {
+ * //   "repos": {}
+ * // }
+ */
 export const commandInit = () => {
   try {
     if (fs.existsSync(CONFIG_FILE_PATH)) {

@@ -2,6 +2,15 @@ import fs from 'fs'
 import path from 'path'
 import { isText } from '../fns/is-text'
 
+/**
+ * Builds the repository by processing the repo.json file.
+ * Reads the repo.json file, processes its items, and writes them to the public/r directory.
+ *
+ * @example
+ * // Run from CLI
+ * $ reany build
+ * // Creates public/r/repo.json with processed items
+ */
 export const commandBuild = async () => {
   const projectDir = process.cwd()
   const repoDir = path.join(projectDir, `repo.json`)

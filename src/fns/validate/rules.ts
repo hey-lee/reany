@@ -7,6 +7,11 @@ export interface Rule {
   validate: (text: string) => Promise<boolean> | boolean
 }
 
+/**
+ * A collection of validation rules for different types of text.
+ * Each key in the object corresponds to a specific type of text (e.g., repoUrl),
+ * and the value is an array of rules to validate that type of text.
+ */
 export const rules: Record<string, Rule[]> = {
   repoUrl: [
     {

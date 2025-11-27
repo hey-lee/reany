@@ -13,6 +13,24 @@ import { hasConfig, readConfig } from '../config'
 import { validate } from '../fns/validate'
 import { rules } from '../fns/validate/rules'
 
+/**
+ * Adds one or more components to the project.
+ * A component can be:
+ * 1. A full URL pointing to a Reany repository JSON.
+ * 2. A scoped package like @scope/name, resolved via the config file.
+ * 3. A shorthand like "owner:repo", mapped to http://localhost:3000/r/owner/repo.json.
+ *
+ * @param components - List of component strings to add.
+ *
+ * @example
+ * // Add from a full URL
+ * $ reany add https://reany.example.com/repos/my-lib.json
+ *
+ * @example
+ * // Add a scoped package (requires config)
+ * $ reany add @tailwinds/button
+ */
+
 export const commandAdd = async (components: string[]) => {
   for (const component of components) {
     if (isUrl(component)) {
@@ -56,6 +74,14 @@ export const commandAdd = async (components: string[]) => {
   }
 }
 
+/**
+ * Adds files to the repository.
+ * Iterates over the files array, creates directories if they don't exist,
+ * and writes the file content to the specified target path.
+ * If the file already exists, prompts the user for confirmation to overwrite.
+ *
+ * @param files - The files to add to the repository.
+ */
 const addFiles = async (files: Reany.File[]) => {
   for (const file of files) {
     const dirname = path.dirname(path.join(process.cwd(), file.target))
@@ -79,6 +105,14 @@ const addFiles = async (files: Reany.File[]) => {
   }
 }
 
+/**
+ * Fetches a repository from the given URL.
+ * Reads the repository JSON, validates its schema, and adds its files to the repository.
+ * Recursively fetches dependencies if any.
+ *
+ * @param component - The URL of the repository to fetch.
+ * @throws {Error} Throws if reading or writing files fails.
+ */
 const fetchRepo = async (component: string) => {
   try {
     const response = await fetch(component)
