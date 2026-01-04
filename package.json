@@ -1,7 +1,7 @@
 {
   "name": "reany",
   "version": "0.0.3",
-  "description": "",
+  "description": "Re(use)any component in any project",
   "license": "MIT",
   "type": "module",
   "module": "dist/index.js",
@@ -30,7 +30,13 @@
   "files": [
     "dist"
   ],
-  "keywords": [],
+  "keywords": [
+    "cli",
+    "reany",
+    "reuse",
+    "component",
+    "components"
+  ],
   "author": "DBL <me@banli.co>",
   "dependencies": {
     "chalk": "^5.6.2",
